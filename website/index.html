@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tide – your stress diary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Your week, softly</h1>
+<p class="lead">Each soft shape is a moment from your university days. Warmer, larger shapes were tenser than your own usual. Tap one and tell yourself what was going on.</p>
+
+<div class="bar-top">
+ <div class="seg" role="group" aria-label="Whose data to show">
+  <button id="srcMine" aria-pressed="false">My band</button>
+  <button id="srcDemo" aria-pressed="true">Demo profile</button>
+ </div>
+ <span class="demo" id="demoBadge">Demo profile · simulated data</span>
+</div>
+
+<div class="scroll"><svg id="map" role="img" aria-label="Stress landscape of your recent days"></svg>
+ <p class="empty" id="empty" hidden>No moments yet. Connect your band below and wear it for a while; your days will appear here as soft shapes.</p>
+</div>
+<div class="legend"><span>Calmer than usual</span><span class="grad"></span><span>Tenser than usual</span><span class="legend-ring"><span class="ring"></span> your band offered a breathing moment</span></div>
+
+<div class="grid">
+ <section class="card" aria-live="polite">
+  <h2 id="ptitle">Pick a moment</h2>
+  <p class="mood" id="pmood">Tap any shape above to look closer.</p>
+  <div id="form" hidden>
+   <label for="txt" class="note">What were you doing?</label>
+   <div class="chips" id="chips"></div>
+   <textarea id="txt" placeholder="Anything you want to remember about this moment"></textarea>
+   <button class="save" id="save">Save note</button>
+   <p class="saved" id="saved"></p>
+  </div>
+ </section>
+ <section class="card">
+  <h2>What your notes say so far</h2>
+  <div id="pat"></div>
+  <p class="note">These are hints from your own notes, not verdicts. The more you add, the clearer they get.</p>
+ </section>
+</div>
+
+<section class="card band">
+ <div class="band-head">
+  <div>
+   <h2>Your band</h2>
+   <p class="note" id="bandStatus">Not connected. Plug the band into this computer with USB, then connect.</p>
+  </div>
+  <button class="save" id="connect">Connect band</button>
+ </div>
+ <div class="live" id="live" hidden>
+  <svg viewBox="0 0 120 120" width="96" height="96" aria-hidden="true"><defs><filter id="lb" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs><circle id="orb" cx="60" cy="60" r="30" fill="rgb(111,179,184)" filter="url(#lb)"/></svg>
+  <p class="mood" id="liveText">Listening quietly.</p>
+ </div>
+
+ <details id="behind">
+  <summary>Behind the scenes (for the project team)</summary>
+  <div class="dev">
+   <dl class="stats">
+    <div><dt>Last RMSSD</dt><dd id="dLast">–</dd></div>
+    <div><dt>Baseline in use</dt><dd id="dBase">–</dd></div>
+    <div><dt>Readings this session</dt><dd id="dCount">0</dd></div>
+    <div><dt>Breathing cues this session</dt><dd id="dCues">0</dd></div>
+   </dl>
+
+   <fieldset>
+    <legend>Baseline</legend>
+    <label><input type="radio" name="bmode" value="auto" checked> Automatic (band's BASELINE if it sends one, otherwise the median of your stored moments)</label>
+    <label><input type="radio" name="bmode" value="manual"> Fixed value: <input type="number" id="bManual" min="5" max="300" step="1" value="50"> ms</label>
+   </fieldset>
+   <fieldset>
+    <legend>Display</legend>
+    <label>Breathing-moment threshold (only used if the band never sends CUE): <input type="number" id="cueRatio" min="0.3" max="1" step="0.05" value="0.65"> × baseline</label>
+    <label>Days to show: <select id="days"><option>7</option><option selected>14</option><option>30</option><option>60</option></select></label>
+   </fieldset>
+   <div class="actions">
+    <button class="btn" id="expJson">Download backup (.json)</button>
+    <button class="btn" id="expCsv">Download data (.csv)</button>
+    <label class="btn">Import file (.json / .csv)<input type="file" id="imp" accept=".json,.csv,.txt" hidden></label>
+    <button class="btn danger" id="wipe">Delete my data</button>
+   </div>
+   <p class="note">Serial log (latest lines from the band):</p>
+   <pre id="log"></pre>
+  </div>
+ </details>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
